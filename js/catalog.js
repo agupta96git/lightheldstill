@@ -138,8 +138,8 @@ const CATALOG = [
 
 const COLLECTIONS = {
   "stone-sky": {
-    name: "Stone & Sky",
-    desc: "Rock shaped by deep time — from the hoodoos of Bryce to the glens of Scotland and the lava fields of Iceland.",
+    name: "Land & Sky",
+    desc: "Canyons, mountains, water, and weather, from the hoodoos of Bryce and the walls of Zion to the glens of Scotland and the green valleys of Iceland.",
     cover: "p093"
   },
   "beyond-visible": {
@@ -174,8 +174,10 @@ const SIZES = [
 ];
 const PAY_LINKS = {};   // e.g. { '8×10': 'https://buy.stripe.com/...' }
 const CONTACT_EMAIL = 'contact.lightheldstill@gmail.com';
-const COLLECTION_ORDER = ['stone-sky','beyond-visible','flora','black-white','light'];
-const SELECTED = ['p006','p080','p114','p123','p127','p100'];
+const COLLECTION_ORDER = ['beyond-visible','stone-sky','flora','black-white','light'];
+const SELECTED = ['p079','p119','p093','p131','p102','p069'];   // hero slideshow
+const COVERS = { 'beyond-visible':['p119','50% 38%'], 'stone-sky':['p093','50% 8%'], 'flora':['p131','50% 45%'], 'black-white':['p102','50% 50%'], 'light':['p069','50% 50%'] };
+const MARK = '<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12V3h9M28 3h9v9M37 28v9h-9M12 37H3v-9"/></g><circle cx="20" cy="20" r="4.2" fill="#d9b25a"/></svg>';
 
 function imgPath(id, size) { return `images/${size}/${id}.jpg`; }
 function byCollection(key) { return CATALOG.filter(p => p.collection === key); }
@@ -193,28 +195,28 @@ function photoTiles(container, items, listKey) {
 function siteChrome(active) {
   const links = COLLECTION_ORDER.map(k => `<a href="collection.html?c=${k}">${esc(COLLECTIONS[k].name)}</a>`).join('');
   document.getElementById('site-header').innerHTML = `
-    <a href="index.html" class="mark" aria-label="Light Held Still, home">LHS</a>
-    <nav class="mono topnav">
-      <a href="index.html" class="${active==='home'?'cur':''}">Home</a>
-      <span class="dd">
-        <a href="portfolio.html" class="${active==='portfolio'?'cur':''}" id="dd-trigger">Portfolio ▾</a>
-        <span class="dd-menu">${links}<a href="collection.html?c=all">All images</a></span>
-      </span>
-      <a href="index.html#about" class="${active==='about'?'cur':''}">About</a>
-      <a href="index.html#contact">Contact</a>
-    </nav>
-    <a href="index.html#selected" class="mono cta-block">Order a print</a>`;
+    <div class="rib">
+      <nav class="rl mono">
+        <span class="dd"><a href="portfolio.html" class="${active==='portfolio'?'cur':''}" id="dd-trigger">Portfolio ▾</a>
+          <span class="dd-menu">${links}<a href="collection.html?c=all">All images</a></span></span>
+        <a href="index.html#about">About</a>
+      </nav>
+      <a href="index.html" class="brand" aria-label="Light Held Still, home">${MARK}<span class="wm">Light Held Still</span></a>
+      <nav class="rr mono">
+        <a href="index.html#contact">Contact</a>
+        <a href="portfolio.html" class="pill">Order a print</a>
+      </nav>
+    </div>`;
   const fl = COLLECTION_ORDER.map(k => `<a href="collection.html?c=${k}" class="flink">${esc(COLLECTIONS[k].name)}</a>`).join('');
   document.getElementById('site-footer').innerHTML = `
-    <div class="foot-grid">
+    <div class="foot-grid" id="contact">
       <div class="foot-brand">
-        <div class="serif foot-mark">Light Held Still</div>
+        <div class="brand">${MARK}<span class="wm">Light Held Still</span></div>
         <p>Fine art photography by Ashwani Gupta. Prints made to order.</p>
       </div>
       <div><div class="mono dim">Portfolio</div>${fl}<a href="collection.html?c=all" class="flink">All images</a></div>
       <div><div class="mono dim">Info</div>
         <a href="index.html#about" class="flink">About</a>
-        <a href="index.html#contact" class="flink">Contact</a>
         <a href="mailto:${CONTACT_EMAIL}" class="flink">${CONTACT_EMAIL}</a></div>
     </div>
     <div class="mono foot-base dim"><span>© 2026 Light Held Still. All images reserved.</span><span>Each print made and packed by hand</span></div>`;
@@ -223,4 +225,12 @@ function siteChrome(active) {
     if (window.matchMedia('(hover: none)').matches && !dd.classList.contains('open')) { e.preventDefault(); dd.classList.add('open'); }
   });
   document.addEventListener('click', e => { if (!dd.contains(e.target)) dd.classList.remove('open'); });
+}
+
+function bandHTML(k) {
+  const c = COLLECTIONS[k], n = byCollection(k).length, [id,pos] = COVERS[k];
+  return `<a class="band" href="collection.html?c=${k}">
+    <img src="${imgPath(id,'full')}" alt="${esc(c.name)}" style="object-position:${pos}" loading="lazy">
+    <div class="band-t"><span class="band-n">${esc(c.name)}</span>
+      <span class="band-m"><span class="mono">${n} photographs</span><span class="band-d">${esc(c.desc)}</span></span></div></a>`;
 }

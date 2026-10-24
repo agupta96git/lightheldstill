@@ -6,6 +6,7 @@
 <title>Photograph — Light Held Still</title>
 <meta name="description" content="Fine art print from Light Held Still.">
 <meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -47,8 +48,8 @@ const p=byId(q.get('id'))||CATALOG[0];
 let listKey=q.get('c')||p.collection;
 let list = listKey==='all'?CATALOG : listKey==='selected'?SELECTED.map(byId) : byCollection(listKey);
 if(!list.some(x=>x.id===p.id)){listKey=p.collection;list=byCollection(listKey);}
-const cname = COLLECTIONS[listKey]?COLLECTIONS[listKey].name : listKey==='selected'?'Selected work':'All images';
-const cl = COLLECTIONS[listKey]?`collection.html?c=${listKey}`:(listKey==='selected'?'index.html#selected':'collection.html?c=all');
+const cname = COLLECTIONS[listKey]?COLLECTIONS[listKey].name : listKey==='selected'?'Featured':'All images';
+const cl = COLLECTIONS[listKey]?`collection.html?c=${listKey}`:(listKey==='selected'?'index.html':'collection.html?c=all');
 document.title=p.title+' — Light Held Still';
 const big=document.getElementById('big'); big.src=imgPath(p.id,'full'); big.alt=p.title;
 document.getElementById('ptitle').textContent=p.title;

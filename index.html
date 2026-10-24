@@ -3,79 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Light Held Still — Fine Art Photography</title>
-<meta name="description" content="Fine art photography by Ashwani Gupta. Prints made to order across five collections.">
+<title>Light Held Still — Landscape and Infrared Photography</title>
+<meta name="description" content="Landscape and infrared fine art photography by Ashwani Gupta. Prints made to order.">
 <meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <header id="site-header"></header>
 
-<section class="hero" id="top">
-  <img src="images/full/p079.jpg" alt="Highland Pasture, Storm Light, Scottish Highlands">
-  <div class="hero-text"><h1>Light Held Still</h1><p class="mono">Fine art photography</p></div>
+<section class="hero" id="top" aria-roledescription="carousel" aria-label="Featured photographs">
+  <div id="slides"></div>
+  <div class="hero-cap">
+    <div class="mono hero-tag">Landscape and infrared photography</div>
+    <div class="hero-title" id="h-title"></div>
+    <div class="mono hero-sub"><span id="h-coll"></span><a id="h-link" href="#">View print →</a></div>
+  </div>
+  <div class="ticks" id="ticks"></div>
 </section>
 
-<section class="sec" id="selected">
-  <div class="sec-head">
-    <div><div class="mono dim">Selected work</div><h2>Start here</h2></div>
-    <p>Choose a photograph to see sizes and order a print.</p>
-  </div>
-  <div id="selected-rows"></div>
+<section class="sec" id="collections" style="padding-top:clamp(64px,8vw,96px)">
+  <div class="mono dim">Collections</div>
+  <div class="bands" id="bands"></div>
+  <a class="allrow" href="collection.html?c=all"><span class="allrow-t">View the whole portfolio</span><span class="mono dim" id="all-n"></span></a>
 </section>
 
-<section class="sec" id="collections">
-  <div class="sec-head">
-    <div><div class="mono dim">Collections</div><h2>Five collections</h2></div>
-    <p>Organized by subject and mood, not geography.</p>
-  </div>
-  <div class="cards" id="cards"></div>
-</section>
-
-<section class="rulesec" id="about" style="margin-top:clamp(56px,8vw,104px)">
-  <div class="about-grid">
-    <div><div class="mono dim">About</div><h2 class="page-title">The work</h2></div>
-    <div class="prose">
-      <p>Light Held Still is the photography of Ashwani Gupta, a study in patience, light, and the moment just before things change. The work spans Bryce Canyon and Zion, the Scottish Highlands, Iceland, Florida's wetlands, and closer to home in the Mid-Atlantic.</p>
-      <p>Each image begins with a long wait and ends in a fraction of a second. The infrared work, collected under <em>Beyond Visible</em>, renders the familiar world in wavelengths the eye cannot see: foliage turns white, skies burn, and the ordinary becomes alien.</p>
-    </div>
-    <div class="prose">
-      <p>Every print is made to order on archival paper, matted, backed, and hand-packed. Sizes from 5×7 to 11×14. No print is identical; each is pulled fresh for the order.</p>
-      <p>For print inquiries, licensing, or commission work, write to the address below. Response within 48 hours.</p>
-    </div>
-  </div>
-</section>
-
-<section class="rulesec contact" id="contact" style="margin-bottom:0">
-  <div class="mono dim">Prints ship within 5–7 business days</div>
-  <h2>Bring a photograph home.</h2>
-  <div class="btns">
-    <a href="portfolio.html" class="btn-solid mono">Browse portfolio</a>
-    <a href="#selected" class="btn-line mono">Order a print</a>
-  </div>
-  <p style="margin:28px 0 0"><a class="textlink" href="mailto:contact.lightheldstill@gmail.com" style="font-size:15px;font-weight:400">contact.lightheldstill@gmail.com</a></p>
+<section class="artist" id="about">
+  <div class="mono dim">The photographer</div>
+  <p class="artist-l">Ashwani Gupta photographs the moment just before things change: long waits, fast light, and an infrared eye for what the camera was not meant to see.</p>
+  <p class="artist-s">Every print is made to order on archival paper, matted, and packed by hand.</p>
 </section>
 <footer id="site-footer"></footer>
 <script src="js/catalog.js"></script>
 <script>
 siteChrome('home');
-// Selected work: two justified rows, widths follow each photo's aspect ratio
-const dims = {};
-function row(ids){
-  return '<div class="srow">'+ids.map(id=>{
-    const p=byId(id), r=dims[id];
-    return `<a class="frame" href="photo.html?id=${id}&c=selected" style="flex:${r} 1 ${Math.round(r*160)}px"><div class="frame-in"><img src="${imgPath(id,'mid')}" alt="${esc(p.title)}"></div></a>`;
-  }).join('')+'</div>';
+document.getElementById('bands').innerHTML = COLLECTION_ORDER.map(bandHTML).join('');
+document.getElementById('all-n').textContent = CATALOG.length + ' photographs →';
+
+const slides = SELECTED.map(byId);
+const box = document.getElementById('slides'), ticks = document.getElementById('ticks');
+box.innerHTML = slides.map((p,i)=>`<div class="slide${i===0?' on':''}"><img src="${imgPath(p.id,'full')}" alt="${esc(p.title)}" ${i===0?'':'loading="lazy"'}></div>`).join('');
+ticks.innerHTML = slides.map((p,i)=>`<button aria-label="Show photograph ${i+1}"${i===0?' class="on"':''}></button>`).join('');
+let cur = 0, timer = null;
+function show(i){
+  cur = (i+slides.length)%slides.length;
+  box.querySelectorAll('.slide').forEach((el,k)=>el.classList.toggle('on',k===cur));
+  ticks.querySelectorAll('button').forEach((el,k)=>el.classList.toggle('on',k===cur));
+  const p = slides[cur];
+  document.getElementById('h-title').textContent = p.title;
+  document.getElementById('h-coll').textContent = COLLECTIONS[p.collection].name;
+  document.getElementById('h-link').href = `photo.html?id=${p.id}&c=selected`;
 }
-Promise.all(SELECTED.map(id=>new Promise(res=>{const i=new Image();i.onload=()=>{dims[id]=i.naturalWidth/i.naturalHeight;res()};i.onerror=()=>{dims[id]=1.5;res()};i.src=imgPath(id,'mid');})))
- .then(()=>{document.getElementById('selected-rows').innerHTML=row(SELECTED.slice(0,3))+row(SELECTED.slice(3));});
-document.getElementById('cards').innerHTML = COLLECTION_ORDER.map(k=>{
-  const c=COLLECTIONS[k], n=byCollection(k).length;
-  return `<a class="card" href="collection.html?c=${k}">
-    <div class="frame"><div class="card-img"><img src="${imgPath(c.cover,'mid')}" alt="${esc(c.name)}" loading="lazy"></div></div>
-    <div class="card-meta"><span class="card-name">${esc(c.name)}</span><span class="mono dim">${n} photographs</span></div>
-    <p class="card-desc">${esc(c.desc)}</p></a>`;
-}).join('') + `<a class="all" href="collection.html?c=all"><span class="mono dim">All images</span><span><span class="all-title">View the whole portfolio</span><span class="mono dim" style="display:block;margin-top:14px">${CATALOG.length} photographs</span></span></a>`;
+ticks.querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{show(i);start();}));
+function start(){
+  clearInterval(timer);
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  timer = setInterval(()=>{ if(!document.hidden) show(cur+1); }, 6500);
+}
+show(0); start();
 
 </script>
 </body>

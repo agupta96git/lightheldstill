@@ -6,29 +6,23 @@
 <title>Portfolio — Light Held Still</title>
 <meta name="description" content="All collections by Light Held Still.">
 <meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <header id="site-header"></header>
 
 <section class="sec">
-  <div class="sec-head">
-    <div><div class="mono dim">All collections</div><h1 class="page-title">Portfolio</h1></div>
-    <p>Organized by subject and mood, not geography.</p>
-  </div>
-  <div class="cards" id="cards"></div>
+  <div class="mono dim">Collections</div>
+  <div class="bands" id="bands"></div>
+  <a class="allrow" href="collection.html?c=all"><span class="allrow-t">View all images</span><span class="mono dim" id="all-n"></span></a>
 </section>
 <footer id="site-footer"></footer>
 <script src="js/catalog.js"></script>
 <script>
 siteChrome('portfolio');
-document.getElementById('cards').innerHTML = COLLECTION_ORDER.map(k=>{
-  const c=COLLECTIONS[k], n=byCollection(k).length;
-  return `<a class="card" href="collection.html?c=${k}">
-    <div class="frame"><div class="card-img"><img src="${imgPath(c.cover,'mid')}" alt="${esc(c.name)}" loading="lazy"></div></div>
-    <div class="card-meta"><span class="card-name">${esc(c.name)}</span><span class="mono dim">${n} photographs</span></div>
-    <p class="card-desc">${esc(c.desc)}</p></a>`;
-}).join('') + `<a class="all" href="collection.html?c=all"><span class="mono dim">All images</span><span><span class="all-title">View the whole portfolio</span><span class="mono dim" style="display:block;margin-top:14px">${CATALOG.length} photographs</span></span></a>`;
+document.getElementById('bands').innerHTML = COLLECTION_ORDER.map(bandHTML).join('');
+document.getElementById('all-n').textContent = CATALOG.length + ' photographs →';
 
 </script>
 </body>
