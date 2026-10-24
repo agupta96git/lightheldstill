@@ -173,7 +173,7 @@ const SIZES = [
   { label:'11×14',  price:95 }
 ];
 const PAY_LINKS = {};   // e.g. { '8×10': 'https://buy.stripe.com/...' }
-const CONTACT_EMAIL = 'hello@lightheldstill.com';
+const CONTACT_EMAIL = 'contact.lightheldstill@gmail.com';
 const COLLECTION_ORDER = ['stone-sky','beyond-visible','flora','black-white','light'];
 const SELECTED = ['p006','p080','p114','p123','p127','p100'];
 
