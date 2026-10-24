@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photograph — Light Held Still</title>
+<meta name="description" content="Fine art print from Light Held Still.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header id="site-header"></header>
+
+<main class="sec" style="padding-bottom:0">
+  <div class="crumbs mono"><a class="textlink" href="portfolio.html">Portfolio</a><span>/</span><a class="textlink" id="crumb-c" href="portfolio.html"></a></div>
+  <div class="pgrid">
+    <div class="pmain">
+      <div class="frame lg"><div class="frame-in"><img id="big" src="" alt=""></div></div>
+      <div class="pnav mono"><a class="textlink" id="prev" href="#">Previous</a><a class="textlink" id="next" href="#">Next</a></div>
+    </div>
+    <div class="pside">
+      <div class="mono dim" id="pcoll"></div>
+      <h1 class="ptitle" id="ptitle"></h1>
+      <div class="buy">
+        <div class="mono dim">Choose a size</div>
+        <div class="sizes" id="sizes"></div>
+        <div class="price-row"><span class="price" id="price"></span><span class="mono dim" id="sizelabel"></span></div>
+        <p class="buy-note">Mat and backing included. Printed to order on archival paper.</p>
+      </div>
+      <div class="pbtns">
+        <a class="btn-solid mono" id="buy" href="#" target="_blank" rel="noopener">Buy this print</a>
+        <a class="btn-line mono" id="ask" href="#">Ask a question</a>
+      </div>
+      <div class="facts">
+        <div><span class="mono dim">Ships</span><span>Within 5–7 business days</span></div>
+        <div><span class="mono dim">Made by</span><span>Hand, one print at a time</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer id="site-footer"></footer>
+<script src="js/catalog.js"></script>
+<script>
+siteChrome('portfolio');
+const q=new URLSearchParams(location.search);
+const p=byId(q.get('id'))||CATALOG[0];
+let listKey=q.get('c')||p.collection;
+let list = listKey==='all'?CATALOG : listKey==='selected'?SELECTED.map(byId) : byCollection(listKey);
+if(!list.some(x=>x.id===p.id)){listKey=p.collection;list=byCollection(listKey);}
+const cname = COLLECTIONS[listKey]?COLLECTIONS[listKey].name : listKey==='selected'?'Selected work':'All images';
+const cl = COLLECTIONS[listKey]?`collection.html?c=${listKey}`:(listKey==='selected'?'index.html#selected':'collection.html?c=all');
+document.title=p.title+' — Light Held Still';
+const big=document.getElementById('big'); big.src=imgPath(p.id,'full'); big.alt=p.title;
+document.getElementById('ptitle').textContent=p.title;
+document.getElementById('pcoll').textContent=COLLECTIONS[p.collection].name;
+const cc=document.getElementById('crumb-c'); cc.textContent=cname; cc.href=cl;
+const i=list.findIndex(x=>x.id===p.id), n=list.length;
+const pv=list[(i-1+n)%n], nx=list[(i+1)%n];
+document.getElementById('prev').href=`photo.html?id=${pv.id}&c=${listKey}`;
+document.getElementById('next').href=`photo.html?id=${nx.id}&c=${listKey}`;
+let sel=1;
+function paint(){
+  const s=SIZES[sel];
+  document.getElementById('sizes').innerHTML=SIZES.map((z,k)=>`<button class="size mono ${k===sel?'on':''}" aria-pressed="${k===sel}" data-k="${k}">${z.label}</button>`).join('');
+  document.querySelectorAll('.size').forEach(b=>b.onclick=()=>{sel=+b.dataset.k;paint();});
+  document.getElementById('price').textContent='$'+s.price;
+  document.getElementById('sizelabel').textContent=s.label+' print';
+  document.getElementById('buy').href = PAY_LINKS[s.label] || `https://paypal.me/ashwaniguptabusiness/${s.price}USD`;
+  document.getElementById('ask').href=`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(p.title+' ('+s.label+')')}`;
+}
+paint();
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')location.href=document.getElementById('next').href;if(e.key==='ArrowLeft')location.href=document.getElementById('prev').href;});
+
+</script>
+</body>
+</html>

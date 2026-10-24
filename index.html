@@ -3,143 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Light Held Still — Photography</title>
-<meta name="description" content="Light Held Still — fine-art photography across five collections: landscape, infrared, flora, black & white, and light.">
+<title>Light Held Still — Fine Art Photography</title>
+<meta name="description" content="Fine art photography by Ashwani Gupta. Prints made to order across five collections.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<header id="site-header"></header>
 
-<section class="hero-d">
-  <img class="hero-d-img" src="images/full/p079.jpg" alt="Highland Pasture, Storm Light — Scottish Highlands">
-  <div class="hero-d-overlay"></div>
-  <nav class="hero-d-nav">
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-trigger">Portfolio <span class="caret">▾</span></button>
-      <div class="nav-dropdown-menu">
-        <div class="drop-col">
-          <a class="drop-item" href="collection.html?c=stone-sky">Stone &amp; Sky</a>
-          <a class="drop-item" href="collection.html?c=beyond-visible">Beyond Visible</a>
-          <a class="drop-item" href="collection.html?c=flora">Flora</a>
-        </div>
-        <div class="drop-divider-v"></div>
-        <div class="drop-col">
-          <a class="drop-item" href="collection.html?c=black-white">Black &amp; White</a>
-          <a class="drop-item" href="collection.html?c=light">Light</a>
-        </div>
-        <div class="drop-divider-v"></div>
-        <div class="drop-col-right">
-          <a class="drop-view-all" href="portfolio.html">View All Images →</a>
-        </div>
-      </div>
-    </div>
-    <a class="hero-d-nav-link" href="index.html#about">About</a>
-    <a class="hero-d-nav-link" href="index.html#contact">Contact</a>
-  </nav>
-  <div class="hero-d-wordmark">Light Held Still</div>
-  <div class="hero-d-footer">
-    <span class="hero-d-sub">Fine Art Photography</span>
-    <a class="hero-d-scroll" href="index.html#collections">Explore ↓</a>
-  </div>
+<section class="hero" id="top">
+  <img src="images/full/p079.jpg" alt="Highland Pasture, Storm Light, Scottish Highlands">
+  <div class="hero-text"><h1>Light Held Still</h1><p class="mono">Fine art photography</p></div>
 </section>
 
-<section class="section" id="collections">
-  <div class="section-head">
-    <div>
-      <div class="section-eyebrow">Browse by Subject</div>
-      <h2 class="section-title">Five Collections</h2>
-    </div>
-    <p class="section-note">Organized by subject and mood, not geography.</p>
+<section class="sec" id="selected">
+  <div class="sec-head">
+    <div><div class="mono dim">Selected work</div><h2>Start here</h2></div>
+    <p>Choose a photograph to see sizes and order a print.</p>
   </div>
-  <div class="collection-grid" id="collection-grid"></div>
+  <div id="selected-rows"></div>
 </section>
 
-<section class="section" id="about">
-  <div class="section-head">
-    <div>
-      <div class="section-eyebrow">About</div>
-      <h2 class="section-title">The Work</h2>
-    </div>
+<section class="sec" id="collections">
+  <div class="sec-head">
+    <div><div class="mono dim">Collections</div><h2>Five collections</h2></div>
+    <p>Organized by subject and mood, not geography.</p>
   </div>
-  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 960px;">
-    <div>
-      <p class="prose">
-        Light Held Still is the photography of Ashwani Gupta — a study in patience, light, and the 
-        moment just before things change. The work spans Bryce Canyon and Zion, the Scottish 
-        Highlands, Iceland, Florida's wetlands, and closer to home in the Mid-Atlantic.
-      </p>
-      <p class="prose" style="margin-top: 1.25rem;">
-        Each image begins with a long wait and ends in a fraction of a second. The infrared work, 
-        collected under <em>Beyond Visible</em>, renders the familiar world in wavelengths the eye 
-        cannot see — foliage turns white, skies burn, and the ordinary becomes alien.
-      </p>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section class="rulesec" id="about" style="margin-top:clamp(56px,8vw,104px)">
+  <div class="about-grid">
+    <div><div class="mono dim">About</div><h2 class="page-title">The work</h2></div>
+    <div class="prose">
+      <p>Light Held Still is the photography of Ashwani Gupta, a study in patience, light, and the moment just before things change. The work spans Bryce Canyon and Zion, the Scottish Highlands, Iceland, Florida's wetlands, and closer to home in the Mid-Atlantic.</p>
+      <p>Each image begins with a long wait and ends in a fraction of a second. The infrared work, collected under <em>Beyond Visible</em>, renders the familiar world in wavelengths the eye cannot see: foliage turns white, skies burn, and the ordinary becomes alien.</p>
     </div>
-    <div>
-      <p class="prose">
-        Every print is made to order on archival paper, matted, backed, and hand-packed. 
-        Sizes range from 5×7 to 13×19. No print is identical — each is pulled fresh for the order.
-      </p>
-      <p class="prose" style="margin-top: 1.25rem;">
-        For print inquiries, licensing, or commission work, reach out via the contact below. 
-        Response within 48 hours.
-      </p>
-      <p style="margin-top: 2rem;">
-        <a href="portfolio.html" style="font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--rust); text-decoration:none;">Browse the Portfolio →</a>
-      </p>
+    <div class="prose">
+      <p>Every print is made to order on archival paper, matted, backed, and hand-packed. Sizes from 5×7 to 11×14. No print is identical; each is pulled fresh for the order.</p>
+      <p>For print inquiries, licensing, or commission work, write to the address below. Response within 48 hours.</p>
     </div>
   </div>
 </section>
 
-<section class="section-tight" id="contact">
-  <div class="section-head">
-    <div>
-      <div class="section-eyebrow">Get in Touch</div>
-      <h2 class="section-title">Get in Touch</h2>
-    </div>
+<section class="rulesec contact" id="contact" style="margin-bottom:0">
+  <div class="mono dim">Prints ship within 5–7 business days</div>
+  <h2>Bring a photograph home.</h2>
+  <div class="btns">
+    <a href="portfolio.html" class="btn-solid mono">Browse portfolio</a>
+    <a href="#selected" class="btn-line mono">Order a print</a>
   </div>
-  <p style="max-width: 52ch; color: var(--bone-dim); font-size: 15px;">
-    Print orders, licensing, commissions, or just to say hello — reach out below. Prints ship within 5–7 business days.
-  </p>
+  <p style="margin:28px 0 0"><a class="textlink" href="mailto:hello@lightheldstill.com" style="font-size:15px;font-weight:400">hello@lightheldstill.com</a></p>
 </section>
-
-<footer class="site-footer">
-  <span>&copy; 2026 Light Held Still. All images reserved.</span>
-  <div class="footer-links">
-    <a href="portfolio.html">Portfolio</a>
-    <a href="index.html#about">About</a>
-    <a href="index.html#contact">Contact</a>
-  </div>
-</footer>
-
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close">Close &times;</button>
-  <button class="lightbox-prev" aria-label="Previous">&#8249;</button>
-  <button class="lightbox-next" aria-label="Next">&#8250;</button>
-  <img src="" alt="">
-  <div class="lightbox-cap">
-    <p class="lightbox-title"></p>
-    <p class="lightbox-sub"></p>
-    <button class="lightbox-order-btn" onclick="openOrderPanel(lbItems[lbIndex])">Order this Print</button>
-  </div>
-</div>
-
+<footer id="site-footer"></footer>
 <script src="js/catalog.js"></script>
 <script>
-  const grid = document.getElementById('collection-grid');
-  const order = ['stone-sky','beyond-visible','flora','black-white','light'];
-  grid.innerHTML = order.map(key => {
-    const c = COLLECTIONS[key];
-    const count = byCollection(key).length;
-    return `
-      <a class="collection-card" href="collection.html?c=${key}">
-        <img src="${imgPath(c.cover, 'thumb')}" alt="${c.name}">
-        <div class="collection-meta">
-          <div class="collection-count">${count} Photographs</div>
-          <h3 class="collection-name">${c.name}</h3>
-        </div>
-      </a>
-    `;
-  }).join('');
+siteChrome('home');
+// Selected work: two justified rows, widths follow each photo's aspect ratio
+const dims = {};
+function row(ids){
+  return '<div class="srow">'+ids.map(id=>{
+    const p=byId(id), r=dims[id];
+    return `<a class="frame" href="photo.html?id=${id}&c=selected" style="flex:${r} 1 ${Math.round(r*160)}px"><div class="frame-in"><img src="${imgPath(id,'mid')}" alt="${esc(p.title)}"></div></a>`;
+  }).join('')+'</div>';
+}
+Promise.all(SELECTED.map(id=>new Promise(res=>{const i=new Image();i.onload=()=>{dims[id]=i.naturalWidth/i.naturalHeight;res()};i.onerror=()=>{dims[id]=1.5;res()};i.src=imgPath(id,'mid');})))
+ .then(()=>{document.getElementById('selected-rows').innerHTML=row(SELECTED.slice(0,3))+row(SELECTED.slice(3));});
+document.getElementById('cards').innerHTML = COLLECTION_ORDER.map(k=>{
+  const c=COLLECTIONS[k], n=byCollection(k).length;
+  return `<a class="card" href="collection.html?c=${k}">
+    <div class="frame"><div class="card-img"><img src="${imgPath(c.cover,'mid')}" alt="${esc(c.name)}" loading="lazy"></div></div>
+    <div class="card-meta"><span class="card-name">${esc(c.name)}</span><span class="mono dim">${n} photographs</span></div>
+    <p class="card-desc">${esc(c.desc)}</p></a>`;
+}).join('') + `<a class="all" href="collection.html?c=all"><span class="mono dim">All images</span><span><span class="all-title">View the whole portfolio</span><span class="mono dim" style="display:block;margin-top:14px">${CATALOG.length} photographs</span></span></a>`;
+
 </script>
 </body>
 </html>

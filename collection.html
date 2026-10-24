@@ -4,138 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Collection — Light Held Still</title>
+<meta name="description" content="Photographs from Light Held Still.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<header id="site-header"></header>
 
-<header class="site-header">
-  <a href="index.html" class="wordmark">Light Held Still</a>
-  <nav class="nav-right">
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-trigger">Portfolio <span class="caret">▾</span></button>
-      <div class="nav-dropdown-menu">
-        <div class="drop-col">
-          <a class="drop-item" href="collection.html?c=stone-sky">Stone &amp; Sky</a>
-          <a class="drop-item" href="collection.html?c=beyond-visible">Beyond Visible</a>
-          <a class="drop-item" href="collection.html?c=flora">Flora</a>
-        </div>
-        <div class="drop-divider-v"></div>
-        <div class="drop-col">
-          <a class="drop-item" href="collection.html?c=black-white">Black &amp; White</a>
-          <a class="drop-item" href="collection.html?c=light">Light</a>
-        </div>
-        <div class="drop-divider-v"></div>
-        <div class="drop-col-right">
-          <a class="drop-view-all" href="portfolio.html">View All Images →</a>
-        </div>
-      </div>
-    </div>
-    <a class="nav-link" href="index.html#about">About</a>
-    <a class="nav-link" href="index.html#contact">Contact</a>
-    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
-  </nav>
-</header>
-
-<section class="section" style="padding-top:6rem">
-  <div class="section-head">
-    <div>
-      <div class="section-eyebrow"><a href="portfolio.html" style="color:inherit;text-decoration:none">Portfolio</a> &rsaquo; <span id="coll-eyebrow"></span></div>
-      <h2 class="section-title" id="coll-title"></h2>
-    </div>
-    <p class="section-note" id="coll-desc"></p>
+<section class="sec">
+  <div class="crumbs mono"><a class="textlink" href="portfolio.html">Portfolio</a><span>/</span><span id="crumb" class="dim" style="color:var(--dim)"></span></div>
+  <div class="sec-head">
+    <div><div class="mono dim" id="count"></div><h1 class="page-title" id="title"></h1></div>
+    <p id="desc"></p>
   </div>
-  <div class="photo-grid" id="photo-grid"></div>
+  <div class="masonry" id="grid"></div>
 </section>
-
-<footer class="site-footer">
-  <span>&copy; 2026 Light Held Still. All images reserved.</span>
-  <div class="footer-links">
-    <a href="portfolio.html">Portfolio</a>
-    <a href="index.html#about">About</a>
-    <a href="index.html#contact">Contact</a>
-  </div>
-</footer>
-
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close">Close &times;</button>
-  <button class="lightbox-prev" aria-label="Previous">&#8249;</button>
-  <button class="lightbox-next" aria-label="Next">&#8250;</button>
-  <img src="" alt="">
-  <div class="lightbox-cap">
-    <p class="lightbox-title"></p>
-    <p class="lightbox-sub"></p>
-    <button class="lightbox-order-btn" onclick="openOrderPanel(lbItems[lbIndex])">Order this Print</button>
-  </div>
-</div>
-
-<div class="order-panel" id="order-panel">
-  <div class="order-sheet">
-    <button class="order-close" onclick="closeOrderPanel()">&#x2715;</button>
-    <p class="order-photo-sub">Order a Print</p>
-    <h2 class="order-photo-title" id="order-photo-title"></h2>
-
-    <span class="order-label">Select a size</span>
-    <div class="size-grid">
-      <button class="size-btn" data-size='5 × 7"' data-price="35" onclick="selectSize(this)">
-        <span class="sz">5 × 7"</span><span class="pr">$35</span>
-      </button>
-      <button class="size-btn" data-size='8 × 10"' data-price="65" onclick="selectSize(this)">
-        <span class="sz">8 × 10"</span><span class="pr">$65</span>
-      </button>
-      <button class="size-btn" data-size='8.5 × 11"' data-price="75" onclick="selectSize(this)">
-        <span class="sz">8.5 × 11"</span><span class="pr">$75</span>
-      </button>
-      <button class="size-btn" data-size='11 × 17"' data-price="125" onclick="selectSize(this)">
-        <span class="sz">11 × 17"</span><span class="pr">$125</span>
-      </button>
-      <button class="size-btn" data-size='13 × 19"' data-price="175" onclick="selectSize(this)">
-        <span class="sz">13 × 19"</span><span class="pr">$175</span>
-      </button>
-    </div>
-
-    <p class="order-note">Mat and backing included. Ships within 5–7 business days.</p>
-
-    <div class="order-total">
-      <span class="order-total-label">Total</span>
-      <span class="order-total-amount" id="order-total-amount">—</span>
-    </div>
-
-    <a class="order-cta" id="order-cta" href="https://paypal.me/ashwaniguptabusiness" target="_blank" rel="noopener" style="pointer-events:none;opacity:0.4">
-      Order via PayPal
-    </a>
-  </div>
-</div>
-
-<script>
-function selectSize(btn) {
-  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  const price = btn.dataset.price;
-  const size = btn.dataset.size;
-  document.getElementById('order-total-amount').textContent = '$' + price;
-  const cta = document.getElementById('order-cta');
-  const title = document.getElementById('order-photo-title').textContent;
-  cta.href = `https://paypal.me/ashwaniguptabusiness/${price}USD`;
-  cta.style.pointerEvents = '';
-  cta.style.opacity = '';
-}
-</script>
-
-
+<footer id="site-footer"></footer>
 <script src="js/catalog.js"></script>
 <script>
-  const params = new URLSearchParams(location.search);
-  const key = params.get('c') || 'stone-sky';
-  const coll = COLLECTIONS[key];
-  const items = byCollection(key);
+siteChrome('portfolio');
+const key=new URLSearchParams(location.search).get('c')||'all';
+const c=COLLECTIONS[key];
+const items=c?byCollection(key):CATALOG;
+const name=c?c.name:'All images';
+document.title=name+' — Light Held Still';
+document.getElementById('crumb').textContent=name;
+document.getElementById('title').textContent=name;
+document.getElementById('count').textContent=items.length+' photographs';
+document.getElementById('desc').textContent=c?c.desc:'Every photograph, across all five collections.';
+photoTiles(document.getElementById('grid'),items,c?key:'all');
 
-  document.title = `${coll.name} — Light Held Still`;
-  document.getElementById('coll-eyebrow').textContent = coll.name;
-  document.getElementById('coll-title').textContent = coll.name;
-  document.getElementById('coll-desc').textContent = coll.desc;
-
-  renderGrid(document.getElementById('photo-grid'), items);
 </script>
 </body>
 </html>

@@ -164,133 +164,63 @@ const COLLECTIONS = {
   }
 };
 
-function imgPath(id, size) {
-  return `images/${size}/${id}.jpg`;
+// Print sizes. Prices are placeholders until final; 11x14 is new.
+// When Stripe Payment Links exist, put each URL in PAY_LINKS (key: "<size>").
+const SIZES = [
+  { label:'5×7',    price:35 },
+  { label:'8×10',   price:65 },
+  { label:'8.5×11', price:75 },
+  { label:'11×14',  price:95 }
+];
+const PAY_LINKS = {};   // e.g. { '8×10': 'https://buy.stripe.com/...' }
+const CONTACT_EMAIL = 'hello@lightheldstill.com';
+const COLLECTION_ORDER = ['stone-sky','beyond-visible','flora','black-white','light'];
+const SELECTED = ['p006','p080','p114','p123','p127','p100'];
+
+function imgPath(id, size) { return `images/${size}/${id}.jpg`; }
+function byCollection(key) { return CATALOG.filter(p => p.collection === key); }
+function byId(id) { return CATALOG.find(p => p.id === id); }
+function esc(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+
+function photoTiles(container, items, listKey) {
+  container.innerHTML = items.map(p => `
+    <a class="tile" href="photo.html?id=${p.id}&c=${listKey}">
+      <div class="frame"><div class="frame-in"><img src="${imgPath(p.id,'mid')}" alt="${esc(p.title)}" loading="lazy"></div></div>
+      <div class="tile-cap">${esc(p.title)}</div>
+    </a>`).join('');
 }
 
-function byCollection(key) {
-  return CATALOG.filter(p => p.collection === key);
-}
-
-function renderGrid(container, items) {
-  container.innerHTML = items.map((p, i) => `
-    <div class="photo-tile" data-index="${i}" tabindex="0" role="button"
-         aria-label="View ${p.title}">
-      <img data-src="${imgPath(p.id, 'thumb')}" alt="${p.title}" loading="lazy">
-      <div class="photo-tile-label">${p.title}</div>
+function siteChrome(active) {
+  const links = COLLECTION_ORDER.map(k => `<a href="collection.html?c=${k}">${esc(COLLECTIONS[k].name)}</a>`).join('');
+  document.getElementById('site-header').innerHTML = `
+    <a href="index.html" class="mark" aria-label="Light Held Still, home">LHS</a>
+    <nav class="mono topnav">
+      <a href="index.html" class="${active==='home'?'cur':''}">Home</a>
+      <span class="dd">
+        <a href="portfolio.html" class="${active==='portfolio'?'cur':''}" id="dd-trigger">Portfolio ▾</a>
+        <span class="dd-menu">${links}<a href="collection.html?c=all">All images</a></span>
+      </span>
+      <a href="index.html#about" class="${active==='about'?'cur':''}">About</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <a href="index.html#selected" class="mono cta-block">Order a print</a>`;
+  const fl = COLLECTION_ORDER.map(k => `<a href="collection.html?c=${k}" class="flink">${esc(COLLECTIONS[k].name)}</a>`).join('');
+  document.getElementById('site-footer').innerHTML = `
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="serif foot-mark">Light Held Still</div>
+        <p>Fine art photography by Ashwani Gupta. Prints made to order.</p>
+      </div>
+      <div><div class="mono dim">Portfolio</div>${fl}<a href="collection.html?c=all" class="flink">All images</a></div>
+      <div><div class="mono dim">Info</div>
+        <a href="index.html#about" class="flink">About</a>
+        <a href="index.html#contact" class="flink">Contact</a>
+        <a href="mailto:${CONTACT_EMAIL}" class="flink">${CONTACT_EMAIL}</a></div>
     </div>
-  `).join('');
-
-  const tiles = container.querySelectorAll('.photo-tile');
-  tiles.forEach((t, i) => {
-    const img = t.querySelector('img');
-    if (i < 8) {
-      img.src = img.dataset.src;
-      img.onload = () => img.classList.add('loaded');
-      delete img.dataset.src;
-    }
+    <div class="mono foot-base dim"><span>© 2026 Light Held Still. All images reserved.</span><span>Each print made and packed by hand</span></div>`;
+  const dd = document.querySelector('.dd');
+  document.getElementById('dd-trigger').addEventListener('click', e => {
+    if (window.matchMedia('(hover: none)').matches && !dd.classList.contains('open')) { e.preventDefault(); dd.classList.add('open'); }
   });
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target.querySelector('img');
-        if (img.dataset.src) {
-          img.src = img.dataset.src;
-          img.onload = () => img.classList.add('loaded');
-          delete img.dataset.src;
-        }
-        io.unobserve(entry.target);
-      }
-    });
-  }, { rootMargin: '600px' });
-
-  tiles.forEach(t => io.observe(t));
-  tiles.forEach(t => {
-    const open = () => openLightbox(items, parseInt(t.dataset.index));
-    t.addEventListener('click', open);
-    t.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(); });
-  });
-}
-
-let lbItems = [], lbIndex = 0;
-
-function openLightbox(items, index) {
-  lbItems = items; lbIndex = index;
-  renderLightbox();
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function renderLightbox() {
-  const p = lbItems[lbIndex];
-  const lb = document.getElementById('lightbox');
-  lb.querySelector('img').src = imgPath(p.id, 'full');
-  lb.querySelector('img').alt = p.title;
-  lb.querySelector('.lightbox-title').textContent = p.title;
-  lb.querySelector('.lightbox-sub').textContent = COLLECTIONS[p.collection]?.name || '';
-}
-
-function lightboxNav(dir) {
-  lbIndex = (lbIndex + dir + lbItems.length) % lbItems.length;
-  renderLightbox();
-}
-
-document.addEventListener('keydown', (e) => {
-  const lb = document.getElementById('lightbox');
-  if (!lb?.classList.contains('open')) return;
-  if (e.key === 'ArrowRight') lightboxNav(1);
-  if (e.key === 'ArrowLeft')  lightboxNav(-1);
-  if (e.key === 'Escape')     closeLightbox();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  const lb = document.getElementById('lightbox');
-  if (lb) {
-    lb.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-    lb.querySelector('.lightbox-prev').addEventListener('click', () => lightboxNav(-1));
-    lb.querySelector('.lightbox-next').addEventListener('click', () => lightboxNav(1));
-  }
-
-  // Tap-to-open Portfolio dropdown (hover doesn't work on touch devices)
-  document.querySelectorAll('.nav-dropdown').forEach(dd => {
-    const trigger = dd.querySelector('.nav-dropdown-trigger');
-    if (!trigger) return;
-    trigger.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const isOpen = dd.classList.contains('open');
-      document.querySelectorAll('.nav-dropdown.open').forEach(o => o.classList.remove('open'));
-      if (!isOpen) dd.classList.add('open');
-    });
-  });
-  document.addEventListener('click', () => {
-    document.querySelectorAll('.nav-dropdown.open').forEach(o => o.classList.remove('open'));
-  });
-});
-
-function openOrderPanel(photo) {
-  const panel = document.getElementById('order-panel');
-  if (!panel) return;
-  // Reset size selection
-  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-  document.getElementById('order-total-amount').textContent = '—';
-  const cta = document.getElementById('order-cta');
-  if (cta) { cta.href = 'https://paypal.me/ashwaniguptabusiness'; cta.style.pointerEvents = 'none'; cta.style.opacity = '0.4'; }
-  // Set photo title
-  const titleEl = document.getElementById('order-photo-title');
-  if (titleEl) titleEl.textContent = photo.title;
-  panel.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeOrderPanel() {
-  const panel = document.getElementById('order-panel');
-  if (panel) panel.classList.remove('open');
-  document.body.style.overflow = '';
+  document.addEventListener('click', e => { if (!dd.contains(e.target)) dd.classList.remove('open'); });
 }
