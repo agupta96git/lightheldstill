@@ -12,29 +12,58 @@
 <body>
 <header id="site-header"></header>
 
-<section class="sec">
-  <div class="crumbs mono"><a class="textlink" href="portfolio.html">Portfolio</a><span>/</span><span id="crumb" class="dim" style="color:var(--dim)"></span></div>
-  <div class="sec-head">
+<main class="cp">
+  <div class="crumbs mono"><a class="textlink" href="portfolio.html">Portfolio</a><span>/</span><span id="crumb" style="color:var(--dim)"></span></div>
+  <div class="cp-top">
     <div><div class="mono dim" id="count"></div><h1 class="page-title" id="title"></h1></div>
     <p id="desc"></p>
   </div>
-  <div class="masonry" id="grid"></div>
-</section>
+  <div id="body"></div>
+</main>
 <footer id="site-footer"></footer>
 <script src="js/catalog.js"></script>
+<script src="js/lightbox.js"></script>
 <script>
 siteChrome('portfolio');
 const key=new URLSearchParams(location.search).get('c')||'all';
 const c=COLLECTIONS[key];
 const items=c?byCollection(key):CATALOG;
 const name=c?c.name:'All images';
+const lk=c?key:'all';
 document.title=name+' — Light Held Still';
 document.getElementById('crumb').textContent=name;
 document.getElementById('title').textContent=name;
-document.getElementById('count').textContent=items.length+' photographs';
 document.getElementById('desc').textContent=c?c.desc:'Every photograph, across all five collections.';
-photoTiles(document.getElementById('grid'),items,c?key:'all');
-
+const body=document.getElementById('body');
+const href=id=>`photo.html?id=${id}&c=${lk}`;
+const fig=(p,w,h)=>`<a class="cp-fig" style="width:${w}px;height:${h}px" href="${href(p.id)}"><div class="cp-ph"><img src="${imgPath(p.id,'mid')}" alt="${esc(p.title)}" loading="lazy"><div class="lab">${esc(p.title)}</div></div></a>`;
+const asp={};
+function justify(el,list){
+  const W=el.clientWidth, GAP=14, T=W<700?200:290; let rows=[],cur=[],s=0;
+  list.forEach(p=>{const a=asp[p.id]||1.5;cur.push([p,a]);s+=a;if(s*T+GAP*(cur.length-1)>=W){rows.push(cur);cur=[];s=0}});
+  if(cur.length)rows.push(cur);
+  const L=rows.length; if(L>1&&rows[L-1].length===1&&rows[L-2].length>=3){rows[L-1].unshift(rows[L-2].pop())}
+  el.innerHTML=rows.map((r,ri)=>{const sa=r.reduce((q,x)=>q+x[1],0), fill=(W-GAP*(r.length-1))/sa;
+    const h=(ri<rows.length-1||fill<=T*1.7)?fill:T;
+    return `<div class="cp-jr" style="height:${h}px">${r.map(([p,a])=>fig(p,a*h,h)).join('')}</div>`}).join('');
+}
+const groups=[]; // [element, list]
+if(c && c.chapters){
+  document.getElementById('count').textContent=items.length+' photographs · '+c.chapters.length+' places';
+  const jump=`<nav class="cp-jump mono">${c.chapters.map((h,i)=>`<a href="#ch${i+1}">${String(i+1).padStart(2,'0')} ${esc(h.name)}</a>`).join('')}</nav>`;
+  body.innerHTML=jump+c.chapters.map((h,i)=>`<section class="cp-ch" id="ch${i+1}"><div class="cp-rail"><div class="mono dim">Chapter ${String(i+1).padStart(2,'0')}</div><h2>${esc(h.name)}</h2><p>${esc(h.note)}</p><div class="mono dim cnt">${h.ids.length} photograph${h.ids.length>1?'s':''}</div></div><div class="cp-photos" id="g${i}"></div></section>`).join('')
+    +`<div class="cp-end"><div class="mono dim" style="margin-bottom:16px">Every photograph is a print you can order</div><a class="btn-o mono" href="portfolio.html">Browse all collections →</a></div>`;
+  c.chapters.forEach((h,i)=>groups.push([document.getElementById('g'+i),h.ids.map(byId)]));
+}else{
+  document.getElementById('count').textContent=items.length+' photographs';
+  body.innerHTML='<div class="cp-rows" id="g0"></div>';
+  groups.push([document.getElementById('g0'),items]);
+}
+const layoutAll=()=>groups.forEach(([el,l])=>justify(el,l));
+let left=items.length;
+items.forEach(p=>{const im=new Image();im.onload=()=>{asp[p.id]=im.naturalWidth/im.naturalHeight;if(--left===0)layoutAll()};im.onerror=()=>{if(--left===0)layoutAll()};im.src=imgPath(p.id,'mid')});
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layoutAll,150)});
+initLightbox(items,lk);
 </script>
 </body>
 </html>

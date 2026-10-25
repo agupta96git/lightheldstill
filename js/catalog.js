@@ -24,7 +24,7 @@ const CATALOG = [
 
   // ── WATER & MOTION ───────────────────────────────────────
   // Water drop refractions, reflections, long exposures
-  { id:"p009", title:"Cherry Blossoms, Tidal Basin",  collection:"stone-sky" },
+  { id:"p009", title:"Cherry Blossoms, Tidal Basin",  collection:"flora" },
   { id:"p050", title:"Autumn Pond, Orange Fire",      collection:"stone-sky", hero:true },
   { id:"p051", title:"Autumn Pond, Willow Bridge",    collection:"stone-sky" },
   { id:"p068", title:"Water Drop, Refraction I",      collection:"light", hero:true },
@@ -48,7 +48,7 @@ const CATALOG = [
   // Flowers, leaves, botanical macros — all color
   { id:"p010", title:"Parrot Tulip Field",            collection:"flora", hero:true },
   { id:"p013", title:"Magnolia Buds",                 collection:"flora" },
-  { id:"p029", title:"Wildflower Field",              collection:"stone-sky" },
+  { id:"p029", title:"Wildflower Field",              collection:"flora" },
   { id:"p031", title:"Backlit Leaf, Bokeh",           collection:"flora" },
   { id:"p032", title:"Leaf Vein Macro",               collection:"flora", hero:true },
   { id:"p041", title:"Hydrangea, Close",              collection:"flora", hero:true },
@@ -78,7 +78,6 @@ const CATALOG = [
   { id:"p132", title:"Lotus Rising, Dark",            collection:"flora", hero:true },
   { id:"p133", title:"Lotus Interior, Macro",         collection:"flora", hero:true },
   // Birds, mammals, insects, reptiles — all color
-  { id:"p074", title:"Sleeping Calf",                 collection:"light" },
   { id:"p122", title:"Lichen Mosaic",                 collection:"flora" },
 
   // ── BLACK & WHITE ─────────────────────────────────────────
@@ -86,11 +85,11 @@ const CATALOG = [
   { id:"p003", title:"Yosemite, Storm Light",         collection:"black-white", hero:true },
   { id:"p028", title:"Seagulls over Water",           collection:"black-white" },
   { id:"p042", title:"Beech Tree Roots",              collection:"black-white", hero:true },
-  { id:"p048", title:"Oxalis, Night",                 collection:"black-white", hero:true },
+  { id:"p048", title:"Oxalis, Night",                 collection:"flora", hero:true },
   { id:"p052", title:"Geese Over Lincoln Memorial",   collection:"black-white", hero:true },
   { id:"p053", title:"Child and Geese, Potomac",      collection:"black-white", hero:true },
-  { id:"p056", title:"Daffodil, Rain",                collection:"black-white" },
-  { id:"p062", title:"Dandelion at Dusk",             collection:"black-white", hero:true },
+  { id:"p056", title:"Daffodil, Rain",                collection:"flora" },
+  { id:"p062", title:"Dandelion at Dusk",             collection:"flora", hero:true },
   { id:"p076", title:"Zion Ramparts, B&W",            collection:"black-white", hero:true },
   { id:"p084", title:"Loch Morlich, Two Figures",     collection:"black-white", hero:true },
   { id:"p091", title:"Crocus Cluster, B&W",           collection:"black-white" },
@@ -110,7 +109,7 @@ const CATALOG = [
   { id:"p124", title:"Kerið Crater, B&W",             collection:"black-white", hero:true },
   { id:"p125", title:"Skógafoss, B&W",                collection:"black-white", hero:true },
   { id:"p126", title:"Skógafoss, Close B&W",          collection:"black-white" },
-  { id:"p130", title:"Bryce Canyon Road, B&W",        collection:"black-white" },
+  { id:"p130", title:"Water Lily, Night",               collection:"flora" },
 
   // ── LIGHT ─────────────────────────────────────────────────
   // Images where light quality / atmosphere is the primary subject
@@ -140,7 +139,14 @@ const COLLECTIONS = {
   "stone-sky": {
     name: "Land & Sky",
     desc: "Canyons, mountains, water, and weather, from the hoodoos of Bryce and the walls of Zion to the glens of Scotland and the green valleys of Iceland.",
-    cover: "p093"
+    cover: "p093",
+    chapters: [
+      { name:"Utah", note:"Zion and Bryce, in first and last light.", ids:["p093","p095","p114","p100","p094","p105","p112"] },
+      { name:"Scotland", note:"Glencoe and the Highlands, mostly in weather.", ids:["p079","p080","p082"] },
+      { name:"Iceland", note:"Waterfalls and the green valleys of the south.", ids:["p123","p127"] },
+      { name:"The Alps", note:"Clearing storms over the Bavarian lakes and ridges.", ids:["p006","p005"] },
+      { name:"Elsewhere", note:"Colorado aspens, a coastal rainbow, a quiet pond, and one bench at sunrise.", ids:["p051","p075","p081","p050","p117"] }
+    ]
   },
   "beyond-visible": {
     name: "Beyond Visible",
@@ -168,11 +174,10 @@ const COLLECTIONS = {
 // When Stripe Payment Links exist, put each URL in PAY_LINKS (key: "<size>").
 const SIZES = [
   { label:'5×7',    price:35 },
-  { label:'8×10',   price:65 },
   { label:'8.5×11', price:75 },
   { label:'11×14',  price:95 }
 ];
-const PAY_LINKS = {};   // e.g. { '8×10': 'https://buy.stripe.com/...' }
+const PAY_LINKS = {};   // e.g. { '8.5×11': 'https://buy.stripe.com/...' }
 const CONTACT_EMAIL = 'contact.lightheldstill@gmail.com';
 const COLLECTION_ORDER = ['beyond-visible','stone-sky','flora','black-white','light'];
 const SELECTED = ['p079','p119','p093','p131','p102','p069'];   // hero slideshow
@@ -180,7 +185,12 @@ const COVERS = { 'beyond-visible':['p119','50% 38%'], 'stone-sky':['p093','50% 8
 const MARK = '<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12V3h9M28 3h9v9M37 28v9h-9M12 37H3v-9"/></g><circle cx="20" cy="20" r="4.2" fill="#d9b25a"/></svg>';
 
 function imgPath(id, size) { return `images/${size}/${id}.jpg`; }
-function byCollection(key) { return CATALOG.filter(p => p.collection === key); }
+function chapterOrder(key){ const c=COLLECTIONS[key]; if(!c||!c.chapters) return null;
+  const o=[]; c.chapters.forEach(h=>{ h.ids.forEach(i=>o.push(i)); }); return o; }
+function byCollection(key) {
+  const items = CATALOG.filter(p => p.collection === key), o = chapterOrder(key);
+  return o ? items.slice().sort((a,b)=>o.indexOf(a.id)-o.indexOf(b.id)) : items;
+}
 function byId(id) { return CATALOG.find(p => p.id === id); }
 function esc(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
 
