@@ -49,7 +49,7 @@ function justify(el,list){
 }
 const groups=[]; // [element, list]
 if(c && c.chapters){
-  document.getElementById('count').textContent=items.length+' photographs · '+c.chapters.length+' places';
+  document.getElementById('count').textContent=items.length+' photographs · '+c.chapters.length+' '+(c.unit||'chapters');
   const jump=`<nav class="cp-jump mono">${c.chapters.map((h,i)=>`<a href="#ch${i+1}">${String(i+1).padStart(2,'0')} ${esc(h.name)}</a>`).join('')}</nav>`;
   body.innerHTML=jump+c.chapters.map((h,i)=>`<section class="cp-ch" id="ch${i+1}"><div class="cp-rail"><div class="mono dim">Chapter ${String(i+1).padStart(2,'0')}</div><h2>${esc(h.name)}</h2><p>${esc(h.note)}</p><div class="mono dim cnt">${h.ids.length} photograph${h.ids.length>1?'s':''}</div></div><div class="cp-photos" id="g${i}"></div></section>`).join('')
     +`<div class="cp-end"><div class="mono dim" style="margin-bottom:16px">Every photograph is a print you can order</div><a class="btn-o mono" href="portfolio.html">Browse all collections →</a></div>`;

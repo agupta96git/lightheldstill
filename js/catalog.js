@@ -140,6 +140,7 @@ const COLLECTIONS = {
     name: "Land & Sky",
     desc: "Canyons, mountains, water, and weather, from the hoodoos of Bryce and the walls of Zion to the glens of Scotland and the green valleys of Iceland.",
     cover: "p093",
+    unit: "places",
     chapters: [
       { name:"Utah", note:"Zion and Bryce, in first and last light.", ids:["p093","p095","p114","p100","p094","p105","p112"] },
       { name:"Scotland", note:"Glencoe and the Highlands, mostly in weather.", ids:["p079","p080","p082"] },
@@ -151,22 +152,45 @@ const COLLECTIONS = {
   "beyond-visible": {
     name: "Beyond Visible",
     desc: "Infrared photography renders the familiar world in frequencies the eye cannot see.",
-    cover: "ne04"
+    cover: "ne04",
+    chapters: [
+      { name:"Acadia", note:"Mount Desert Island's coast and mountains, in infrared.", ids:["ne01","ne02","ne03","ne04","ne05","ne06","ne07"] },
+      { name:"Blooms & Bees", note:"Flowers and insects, with their colors shifted out of the visible range.", ids:["p085","p086","p087","p088","p089","p090","p121"] },
+      { name:"Trees", note:"Canopies and old oaks in colors the eye never sees.", ids:["p118","p119"] }
+    ]
   },
   "flora": {
     name: "Flora",
     desc: "Flowers, leaves, and botanical forms — from tulip flame abstracts to lotus rising from dark water.",
-    cover: "p131"
+    cover: "p131",
+    chapters: [
+      { name:"Tulips", note:"Parrot fields, flame abstracts, and rain on the buds.", ids:["p010","p044","p045","p057","p063","p064","p065","p066","p092"] },
+      { name:"Lotus", note:"Lotus and water lilies, opening out of dark water.", ids:["p131","p128","p129","p132","p133","p130"] },
+      { name:"Blossoms", note:"Cherry blossoms, magnolia buds, hyacinth and other single blooms up close.", ids:["p009","p013","p060","p061","p041","p043","p073","p058","p059","p096","p120"] },
+      { name:"Leaves", note:"Veins, skeletons, fallen gold, and the textures between.", ids:["p031","p032","p046","p047","p054","p055","p122"] },
+      { name:"Wildflowers", note:"A field, an oxalis at night, a daffodil in rain, and a dandelion at dusk.", ids:["p029","p048","p056","p062"] }
+    ]
   },
   "black-white": {
     name: "Black & White",
     desc: "When color is stripped away, only light, form, and time remain.",
-    cover: "p102"
+    cover: "p102",
+    chapters: [
+      { name:"Canyon Country", note:"Zion's ramparts and the hoodoos of Bryce, stripped down to light and form.", ids:["p076","p099","p101","p103","p104","p106","p107","p110","p111","p115"] },
+      { name:"Iceland", note:"Skógafoss and the Kerið crater.", ids:["p125","p126","p124"] },
+      { name:"Wildlife", note:"Bison, bighorns, gulls and geese.", ids:["p098","p102","p028","p052"] },
+      { name:"Elsewhere", note:"Yosemite storm light, Loch Morlich, beech roots, and a few quiet frames.", ids:["p003","p084","p042","p097","p113","p091","p053"] }
+    ]
   },
   "light": {
     name: "Light",
     desc: "Photographs where light itself is the subject — golden hour, fire skies, and the quality of a single afternoon.",
-    cover: "p069"
+    cover: "p069",
+    chapters: [
+      { name:"Water Drops", note:"Refraction through single drops of water.", ids:["p068","p070","p071","p072"] },
+      { name:"Trees & Shore", note:"A beach at golden hour, an old oak, autumn maples, and a lone tree on a hill.", ids:["p002","p004","p007","p008","p030"] },
+      { name:"Dusk", note:"The last light of the day, from a dandelion to Bryce twilight.", ids:["p069","p108","p109","p116"] }
+    ]
   }
 };
 

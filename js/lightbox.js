@@ -35,14 +35,14 @@ function initLightbox(list, listKey){
   root.querySelector('.lb-x').onclick=close;
   root.querySelector('.lb-next').onclick=e=>{e.stopPropagation();next()};
   root.querySelector('.lb-prev').onclick=e=>{e.stopPropagation();prev()};
-  root.addEventListener('click',e=>{if(moved){moved=false;return}if(e.target===root||e.target===stage)close()});
+  root.addEventListener('click',e=>{if(moved){moved=false;return}if(downOnImg){downOnImg=false;return}if(e.target===root||e.target===stage)close()});
   addEventListener('keydown',e=>{if(root.hidden)return;
     if(e.key==='Escape')close(); else if(e.key==='ArrowRight')next(); else if(e.key==='ArrowLeft')prev();
     else if(e.key==='Tab'){const f=[...root.querySelectorAll('button,a')];const a=document.activeElement;
       if(e.shiftKey&&a===f[0]){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&a===f[f.length-1]){e.preventDefault();f[0].focus()}}});
   // swipe / drag
-  let sx=0,sy=0,dx=0,drag=false,locked=false,moved=false;
-  stage.addEventListener('pointerdown',e=>{if(e.button>0)return;sx=e.clientX;sy=e.clientY;dx=0;drag=true;locked=false;moved=false;stage.setPointerCapture(e.pointerId);img.style.transition='none'});
+  let sx=0,sy=0,dx=0,drag=false,locked=false,moved=false,downOnImg=false;
+  stage.addEventListener('pointerdown',e=>{if(e.button>0)return;downOnImg=(e.target===img);sx=e.clientX;sy=e.clientY;dx=0;drag=true;locked=false;moved=false;stage.setPointerCapture(e.pointerId);img.style.transition='none'});
   stage.addEventListener('pointermove',e=>{if(!drag)return;dx=e.clientX-sx;const dy=e.clientY-sy;
     if(!locked&&Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>10){drag=false;img.style.transition='';img.style.transform='';return}
     locked=true;if(Math.abs(dx)>6)moved=true;img.style.transform=`translateX(${dx}px)`;img.style.opacity=String(Math.max(.35,1-Math.abs(dx)/600))});

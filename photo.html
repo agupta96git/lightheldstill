@@ -39,8 +39,20 @@
     </div>
   </div>
 </main>
+<section class="sec room-h">
+  <div class="mono dim">See the size</div>
+  <h2 class="page-title" style="margin-top:12px">How it looks on a wall</h2>
+  <div class="room-wrap" id="roomwrap" style="margin-top:28px">
+    <div class="room" id="room"><div class="light"></div><div class="base"></div><div class="floor"></div><div class="rug"></div>
+      <div class="abs" id="scene" style="left:0;bottom:88px;width:1200px;height:520px"></div>
+      <div class="abs" style="right:30px;bottom:24px;display:flex;align-items:center;gap:10px"><div style="width:108px;height:6px;border-left:1.5px solid #101014;border-right:1.5px solid #101014;border-bottom:1.5px solid #101014"></div><span class="mono" style="font-size:11px">12 in</span></div>
+    </div>
+  </div>
+  <div class="room-cap mono dim"><span id="roomcap"></span><span>Frames shown for scale. Prints ship matted, not framed.</span></div>
+</section>
 <footer id="site-footer"></footer>
 <script src="js/catalog.js"></script>
+<script src="js/room.js"></script>
 <script>
 siteChrome('portfolio');
 const q=new URLSearchParams(location.search);
@@ -59,7 +71,8 @@ const i=list.findIndex(x=>x.id===p.id), n=list.length;
 const pv=list[(i-1+n)%n], nx=list[(i+1)%n];
 document.getElementById('prev').href=`photo.html?id=${pv.id}&c=${listKey}`;
 document.getElementById('next').href=`photo.html?id=${nx.id}&c=${listKey}`;
-let sel=1;
+let sel=SIZES.length-1, aspect=0;
+const probe=new Image(); probe.onload=()=>{aspect=probe.naturalWidth/probe.naturalHeight; paint();}; probe.src=imgPath(p.id,'mid');
 function paint(){
   const s=SIZES[sel];
   document.getElementById('sizes').innerHTML=SIZES.map((z,k)=>`<button class="size mono ${k===sel?'on':''}" aria-pressed="${k===sel}" data-k="${k}">${z.label}</button>`).join('');
@@ -68,6 +81,7 @@ function paint(){
   document.getElementById('sizelabel').textContent=s.label+' print';
   document.getElementById('buy').href = PAY_LINKS[s.label] || `https://paypal.me/ashwaniguptabusiness/${s.price}USD`;
   document.getElementById('ask').href=`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(p.title+' ('+s.label+')')}`;
+  renderRoom(s.label, imgPath(p.id,'mid'), aspect);
 }
 paint();
 document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')location.href=document.getElementById('next').href;if(e.key==='ArrowLeft')location.href=document.getElementById('prev').href;});
